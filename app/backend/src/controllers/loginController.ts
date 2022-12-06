@@ -8,6 +8,9 @@ export default class LoginController {
   async login(req: Request, res: Response) {
     const userToLogin = req.body as IEmailAndPassword;
     const serviceReturn = await this.loginService.login(userToLogin);
+    if (serviceReturn.status === 200) {
+      return res.status(serviceReturn.status).json({ token: serviceReturn.message });
+    }
     return res.status(serviceReturn.status).json({ message: serviceReturn.message });
   }
 }
