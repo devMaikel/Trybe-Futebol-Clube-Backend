@@ -10,8 +10,7 @@ class LoginService {
     const findedUser = await this.userModel
       .findOne({ where: { email: user.email }, raw: true }) as IUser;
     if (!findedUser) return { status: 401, message: 'Incorrect email or password' };
-    const checkPassword = bcrypt.compare(user.password, findedUser.password);
-    console.log(checkPassword);
+    const checkPassword = await bcrypt.compare(user.password, findedUser.password);
     if (!checkPassword) return { status: 401, message: 'Incorrect email or password' };
     const token = tokenGenerator({
       id: findedUser.id, username: findedUser.username, role: findedUser.role });
