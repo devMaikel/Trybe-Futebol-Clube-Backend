@@ -11,4 +11,6 @@ loginRouter.post(
   (req, res) => loginController.login(req, res),
 );
 
+loginRouter.get('/', (req, res) => loginController.checkToken(req, res));
+
 export default loginRouter;
