@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { IMatches, IMatchGoals } from '../interfaces';
 import MatchesService from '../services/matchesService';
 
 export default class MatchesController {
@@ -29,4 +30,36 @@ export default class MatchesController {
   //   }
   //   return res.status(200).json(serviceReturn);
   // }
+
+  async addMatch(req: Request, res: Response) {
+    const match = req.body as IMatches;
+    if (match.homeTeam === match.awayTeam) {
+      return res.status(422)
+        .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+    const response = await this.matchesService.addMatch(match);
+    if (response === 'Id not exists') {
+      return res.status(404).json({ message: 'There is no team with such id!' });
+    }
+    return res.status(200).json(response);
+  }
+
+  async setInprogress(req: Request, res: Response) {
+    const { id } = req.params;
+    const matchSeted = await this.matchesService.setInprogress(+id, false);
+    if (matchSeted === 1) {
+      return res.status(200).json({ message: 'Finished' });
+    }
+    return res.status(404).json({ message: 'Match not founded/changed' });
+  }
+
+  async setInprogressGoals(req: Request, res: Response) {
+    const { id } = req.params;
+    const matchGoals = req.body as IMatchGoals;
+    const matchSeted = await this.matchesService.setInprogressGoals(+id, matchGoals);
+    if (+matchSeted === 1) {
+      return res.status(200).json({ message: 'Goals updated!' });
+    }
+    return res.status(404).json({ message: 'Match not founded/changed' });
+  }
 }

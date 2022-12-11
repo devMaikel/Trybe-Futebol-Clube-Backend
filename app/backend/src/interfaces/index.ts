@@ -23,17 +23,22 @@ export interface IStatusAndMessage {
   message: string
 }
 
-// export interface ITeam {
-//   teamName: string
-// }
+export interface ITeam {
+  teamName: string
+}
 
-// export interface IMatches {
-//   id: number,
-//   homeTeam: number,
-//   homeTeamGoals: number,
-//   awayTeam: number,
-//   awayTeamGoals: number,
-//   inProgress: boolean,
-//   teamHome?: ITeam,
-//   teamAway?: ITeam
-// }
+export interface IMatches {
+  id?: number,
+  homeTeam: number,
+  homeTeamGoals: number,
+  awayTeam: number,
+  awayTeamGoals: number,
+  inProgress?: boolean,
+  teamHome?: ITeam,
+  teamAway?: ITeam
+}
+
+export interface IMatchGoals {
+  homeTeamGoals: number,
+  awayTeamGoals: number
+}
