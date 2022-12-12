@@ -19,7 +19,7 @@ export default class LoginController {
     const token = req.header('Authorization');
     if (!token) return res.status(401).json({ message: 'Token não encontrado!' });
     const user = tokenDecode(token);
-    if (!user) return res.status(401).json({ message: 'Token inválido!' });
+    if (!user) return res.status(401).json({ message: 'Token must be a valid token' });
     return res.status(200).json({ role: user?.role });
   };
 }

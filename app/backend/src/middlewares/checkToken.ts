@@ -5,6 +5,6 @@ export default async function checkToken(req: Request, res: Response, next: Next
   const token = req.header('Authorization');
   if (!token) return res.status(401).json({ message: 'Token não encontrado!' });
   const user = tokenDecode(token);
-  if (!user) return res.status(401).json({ message: 'Token inválido!' });
+  if (!user) return res.status(401).json({ message: 'Token must be a valid token' });
   next();
 }

@@ -6,7 +6,6 @@ export default function validateEmailAndPassword(req: Request, res: Response, ne
   const user = req.body;
   if (!user.password) return res.status(400).json({ message: 'All fields must be filled' });
   const isEmail = RegexEmail.test(user.email);
-  console.log(isEmail);
-  if (!isEmail) return res.status(401).json({ message: 'Incorrect email or passwordregex' });
+  if (!isEmail) return res.status(401).json({ message: 'Incorrect email or password' });
   next();
 }
