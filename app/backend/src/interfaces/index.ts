@@ -24,6 +24,7 @@ export interface IStatusAndMessage {
 }
 
 export interface ITeam {
+  id?: number,
   teamName: string
 }
 
@@ -41,4 +42,17 @@ export interface IMatches {
 export interface IMatchGoals {
   homeTeamGoals: number,
   awayTeamGoals: number
+}
+
+export interface ITeamTable {
+  name: string,
+  totalPoints: number,
+  totalGames: number,
+  totalVictories: number,
+  totalDraws: number,
+  totalLosses: number,
+  goalsFavor: number,
+  goalsOwn: number,
+  goalsBalance: number,
+  efficiency: number,
 }
