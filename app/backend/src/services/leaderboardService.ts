@@ -1,4 +1,4 @@
-import { loadHomeMatchs } from '../utils/leaderBoardGen';
+import { loadAwayMatches, loadHomeMatchs } from '../utils/leaderBoardGen';
 import { IMatches, ITeam } from '../interfaces';
 import MatchesModel from '../database/models/MatchesModel';
 import MatchesService from './matchesService';
@@ -16,5 +16,14 @@ export default class LeaderboardService {
     const allTeams = await this.teamsService.getAll() as ITeam[];
     const tableHomeMatches = loadHomeMatchs(allFinishedMatches, allTeams);
     return tableHomeMatches;
+  }
+
+  async getAwayLeaderboard() {
+    const result = await this.matchesModel.findAll();
+    const allMatches = result.map((e) => e.dataValues) as IMatches[];
+    const allFinishedMatches = allMatches.filter((e) => e.inProgress === false);
+    const allTeams = await this.teamsService.getAll() as ITeam[];
+    const tableAwayMatches = loadAwayMatches(allFinishedMatches, allTeams);
+    return tableAwayMatches;
   }
 }

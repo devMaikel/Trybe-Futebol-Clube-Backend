@@ -25,6 +25,15 @@ export const sortTable = (table: ITeamTable[]): ITeamTable[] => {
   return sortByPoints;
 };
 
+const updateTable = (table: ITeamTable[]) => {
+  table.forEach((e) => {
+    e.goalsBalance = e.goalsFavor - e.goalsOwn;
+    e.totalPoints = e.totalVictories * 3 + e.totalDraws;
+    e.efficiency = (e.totalPoints / (e.totalGames * 3)) * 100;
+    e.efficiency = +e.efficiency.toFixed(2);
+  });
+};
+
 export const loadHomeMatchs = (allMatches: IMatches[], allTeams: ITeam[]): ITeamTable[] => {
   const table = generateTable(allTeams);
   allMatches.forEach((e) => {
@@ -35,12 +44,33 @@ export const loadHomeMatchs = (allMatches: IMatches[], allTeams: ITeam[]): ITeam
     else if (e.homeTeamGoals < e.awayTeamGoals) table[e.homeTeam - 1].totalLosses += 1;
     else table[e.homeTeam - 1].totalDraws += 1;
   });
-  table.forEach((e) => {
-    e.goalsBalance = e.goalsFavor - e.goalsOwn;
-    e.totalPoints = e.totalVictories * 3 + e.totalDraws;
-    e.efficiency = (e.totalPoints / (e.totalGames * 3)) * 100;
-    e.efficiency = +e.efficiency.toFixed(2);
+  // table.forEach((e) => {
+  //   e.goalsBalance = e.goalsFavor - e.goalsOwn;
+  //   e.totalPoints = e.totalVictories * 3 + e.totalDraws;
+  //   e.efficiency = (e.totalPoints / (e.totalGames * 3)) * 100;
+  //   e.efficiency = +e.efficiency.toFixed(2);
+  // });
+  updateTable(table);
+  return sortTable(table);
+};
+
+export const loadAwayMatches = (allMatches: IMatches[], allTeams: ITeam[]): ITeamTable[] => {
+  const table = generateTable(allTeams);
+  allMatches.forEach((e) => {
+    table[e.awayTeam - 1].goalsFavor += e.awayTeamGoals;
+    table[e.awayTeam - 1].goalsOwn += e.homeTeamGoals;
+    table[e.awayTeam - 1].totalGames += 1;
+    if (e.awayTeamGoals > e.homeTeamGoals) table[e.awayTeam - 1].totalVictories += 1;
+    else if (e.awayTeamGoals < e.homeTeamGoals) table[e.awayTeam - 1].totalLosses += 1;
+    else table[e.awayTeam - 1].totalDraws += 1;
   });
+  // table.forEach((e) => {
+  //   e.goalsBalance = e.goalsFavor - e.goalsOwn;
+  //   e.totalPoints = e.totalVictories * 3 + e.totalDraws;
+  //   e.efficiency = (e.totalPoints / (e.totalGames * 3)) * 100;
+  //   e.efficiency = +e.efficiency.toFixed(2);
+  // });
+  updateTable(table);
   return sortTable(table);
 };
 
