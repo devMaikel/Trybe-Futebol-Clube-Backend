@@ -16,7 +16,7 @@ export default class MatchesController {
       return res.status(200).json(ipMatches);
     }
     if (inProgress === 'false') {
-      const notIpMatches = allMatches.filter((e) => e.inProgress === true);
+      const notIpMatches = allMatches.filter((e) => e.inProgress === false);
       return res.status(200).json(notIpMatches);
     }
     return res.status(200).json(allMatches);
@@ -41,7 +41,7 @@ export default class MatchesController {
     if (response === 'Id not exists') {
       return res.status(404).json({ message: 'There is no team with such id!' });
     }
-    return res.status(200).json(response);
+    return res.status(201).json(response);
   }
 
   async setInprogress(req: Request, res: Response) {
